@@ -1,33 +1,28 @@
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
+import {login} from '../../redux/actions'
 import {
     NavBar,
     WingBlank,
     List,
     WhiteSpace,
     InputItem,
-    Radio,
     Button
 } from 'antd-mobile'
 import {Redirect} from 'react-router-dom'
-import {register} from '../../redux/actions'
-// import './register.less'
 import Logo from '../../components/logo/logo'
 const ListItem=List.Item
-
-class Register extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
             username:'',
             password:'',
             password2:'',
-            type:'God',
         }
     }
-  
     register=()=>{
-        this.props.register(this.state)
+        this.props.login(this.state)
     }
     handleChange=(name,val)=>{
             this.setState({
@@ -35,11 +30,10 @@ class Register extends Component {
             })
             console.log(val)
     }
-    backLogin=()=>{
-        this.props.history.replace('/login')
+    backRegister=()=>{
+        this.props.history.replace('/register')
     }
     render() { 
-        const {type} =this.state
         const {msg,redirectTo} = this.props.user
         const buttonActive={
             backgroundColor:'#4DB6AC'
@@ -62,23 +56,14 @@ class Register extends Component {
                         <WhiteSpace/>
                         <InputItem type="password"  onChange={val=>{this.handleChange("password",val)}}>密&nbsp;&nbsp;&nbsp;码:</InputItem>
                         <WhiteSpace/>
-                        <InputItem type="password"  onChange={val=>{this.handleChange("password2",val)}}>确认密码:</InputItem>
-                        <ListItem>
-                            <sapn>用户类型: </sapn>
-                            &nbsp;&nbsp;&nbsp;
-                            <Radio onChange={()=>this.handleChange('type',"God") } checked={type==='God'} >大神</Radio>
-                            &nbsp;&nbsp;&nbsp;
-                            <Radio onChange={()=>this.handleChange('type',"Boss") } checked={type==='Boss'}>老板</Radio>
-                        </ListItem>
-                        <WhiteSpace/>
                         <WingBlank>
-                        <Button type="primary" className='am-Button-me' activeStyle={buttonActive} onClick={this.register}>注册</Button>
+                        <Button type="primary" className="am-Button-me" onClick={this.register}>登陆</Button>
                         <WhiteSpace/>
-                        <Button className="ghost-Button-me" onClick={this.backLogin} type="ghost">已有账户</Button>
+                        <Button className="ghost-Button-me" onClick={this.backRegister} type="ghost">注册</Button>
                         </WingBlank>
+                        <WhiteSpace/>
                         <br/>
                     </List>
-                   
                 </WingBlank>
             </div>
          );
@@ -87,5 +72,5 @@ class Register extends Component {
 
 export default connect(
     state=>({user:state.user}),
-    {register}
-)(Register);
+    {login}
+)(Login)
