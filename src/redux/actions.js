@@ -1,5 +1,5 @@
-import {reqLogin,reqRegister,reqUpdate} from '../api/index'
-import {AUTH_SUCCESS,ERROR_MSG} from './actions-type'
+import {reqLogin,reqRegister,reqUpdate,reqUser} from '../api/index'
+import {AUTH_SUCCESS,ERROR_MSG,RECEIVE_USER,REST_USER} from './actions-type'
 
 //授权成功同步状态
 const authSuccess = (user) =>({
@@ -10,6 +10,18 @@ const errorMsg = (msg) =>({
     type:ERROR_MSG,
     data:msg
 })
+
+export const receiveUser=(user)=>({
+    type:RECEIVE_USER,
+    data:user
+})
+
+export const restUser=(msg)=>({
+    type:REST_USER,
+    data:msg
+})
+
+
 
 export const register = (user)=>{
     const {username,password,password2,type}=user;
@@ -46,6 +58,30 @@ export const login = (user)=>{
             dispatch(authSuccess(result.data))
         }else{
             dispatch(errorMsg(result.msg))
+        }
+    }
+}
+
+export const updateUser=(user)=>{
+    return async dispatch=>{
+        const response = await reqUpdate(user)
+        const result=response.data 
+        if(result.code===0){
+            dispatch(receiveUser(result.data))
+        }else{
+            dispatch(restUser(result.msg))
+        }
+    }
+}
+
+export const getUser=()=>{
+    return async dispatch=>{
+        const response = await reqUser()
+        const result=response.data
+        if(result.code===0){
+              dispatch(receiveUser(result.data))  
+        }else{
+              dispatch(restUser(result.msg))
         }
     }
 }

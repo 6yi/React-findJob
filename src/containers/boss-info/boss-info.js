@@ -1,19 +1,16 @@
 import React,{Component} from 'react'
 import {connect} from 'react-redux'
-import HeaderSelector from "../../components/header-selector/header-selector";
+import {Redirect} from 'react-router-dom'
 import {
     NavBar,
     InputItem,
     TextareaItem,
     Button,
     WingBlank,
-
-    List,
     WhiteSpace,
-    Radio
-  
 } from 'antd-mobile'
-
+import {updateUser} from '../../redux/actions'
+import HeaderSelector from "../../components/header-selector/header-selector";
 class BossInfo extends Component {
     state = {
         header:'',
@@ -35,13 +32,20 @@ class BossInfo extends Component {
 
     }
     save=()=>{
-        console.log(this.state)
+        this.props.updateUser(this.state)
+        this.props.history.replace('/')
     }
 
     render() { 
+        const {header,type}=this.props.user
         const buttonActive={
             backgroundColor:'#4DB6AC'
         }
+        if(header){
+            const path= (type==='Boss'?'/boss':'/god')
+            return <Redirect to={path}/>
+        }
+
         return ( 
             <div>
                 <NavBar className="navBar">完善信息</NavBar>
@@ -62,6 +66,6 @@ class BossInfo extends Component {
 }
  
 export default connect(
-    state=>({}),
-    {}
+    state=>({user:state.user}),
+    {updateUser}
 )(BossInfo);

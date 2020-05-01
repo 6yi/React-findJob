@@ -10,12 +10,22 @@ class HeaderSelector extends Component {
                 icon:require('../../assets/images/头像'+(i+1)+'.png')
             })
         }
-    }    
-    handleClick=(el)=>{
-
+    } 
+    state={
+        icon:null
+    }   
+    handleClick=({text,icon})=>{
+        this.setState({
+            icon
+        })
+        this.props.selectHeader(icon)
     }
     render() { 
-        const listHead='选择头像';
+        const listHead=!this.state.icon?'选择头像':(
+            <div>
+                已选择头像:<img src={this.state.icon}/>
+            </div>
+        )
         return (
             <List renderHeader={()=>listHead}>
                 <Grid data={this.headerList}  

@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export default function ajax(url,data={},method='GET'){
-    if(method=='GET'){
+    if(method==='GET'){
         let paramStr = ''
         Object.keys(data).forEach(key=>{
             paramStr+=key+'='+data[key]+'&'
