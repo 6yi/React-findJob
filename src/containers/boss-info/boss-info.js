@@ -13,6 +13,7 @@ import {updateUser} from '../../redux/actions'
 import HeaderSelector from "../../components/header-selector/header-selector";
 class BossInfo extends Component {
     state = {
+        userid:'',
         header:'',
         post:'',
         info:'',
@@ -32,8 +33,13 @@ class BossInfo extends Component {
 
     }
     save=()=>{
-        this.props.updateUser(this.state)
-        this.props.history.replace('/')
+        const {post,header,info,salary} =this.state
+        const userid=this.props.user._id
+        // console.log("值等于:"+userid)
+        // console.log("this.state等于:"+this.state.post)
+        this.props.updateUser({userid,post,header,info,post,salary})
+        this.props.history.replace('/god')
+        
     }
 
     render() { 
@@ -41,10 +47,10 @@ class BossInfo extends Component {
         const buttonActive={
             backgroundColor:'#4DB6AC'
         }
-        if(header){
-            const path= (type==='Boss'?'/boss':'/god')
+        if(header) { // 说明信息已经完善
+            const path = type==='God' ? '/god' : '/boss'
             return <Redirect to={path}/>
-        }
+          }
 
         return ( 
             <div>

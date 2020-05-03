@@ -10,14 +10,12 @@ import {
     Button,
     WingBlank,
     WhiteSpace,
-    List,
     
 } from 'antd-mobile'
 
-import {updateUser,restUser} from '../../redux/actions'
+import {updateUser,resetUser} from '../../redux/actions'
 
-const Item=List.Item
-const Brief=Item.Brief
+
 class Setting extends Component {
     constructor(props) {
         super(props);
@@ -38,7 +36,7 @@ class Setting extends Component {
     }
     exit=()=>{
         Cookies.remove('userid')
-        
+        this.props.resetUser("已退出")
         this.props.history.replace('/login')
     }
 
@@ -68,8 +66,13 @@ class Setting extends Component {
 
     }
     save=()=>{
-       this.props.updateUser(this.state)
-       this.props.restUser();
+
+        const {post,header,info,salary} =this.state
+        const userid=this.props.user._id
+        // console.log("值等于:"+userid)
+        // console.log("this.state等于:"+this.state.post)
+        this.props.updateUser({userid,post,header,info,post,salary})
+
        this.props.history.replace('/personal')
     }
     componentDidMount(){
@@ -84,10 +87,10 @@ class Setting extends Component {
      
     }
     render() {
-        const {header,company,post,salary,info} =this.props.user
+    
        
         return (
-            <div >
+            <div style={{marginTop:'13%'}}>
 
                 <Modal
                         popup
@@ -130,5 +133,5 @@ export default connect(
     state=>({
         user:state.user
     }),
-    {updateUser,restUser}
+    {updateUser,resetUser}
 )(Setting);

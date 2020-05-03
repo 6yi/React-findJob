@@ -1,16 +1,13 @@
 import React,{Component} from 'react'
 import {Switch,Route,Redirect} from 'react-router-dom'
-import Cookies from 'js-cookie' //操作前端Cookie对象
+import Cookies from 'js-cookie' 
 import {connect} from 'react-redux'
 import {
     NavBar,
-    InputItem,
-    TextareaItem,
-    Button,
-    WingBlank,
-    WhiteSpace,
 } from 'antd-mobile'
 
+
+import 'react-animated-router/animate.css'; 
 
 import Setting from '../setting/setting'
 import Boss from '../boss/boss'
@@ -21,6 +18,7 @@ import GodInfo from '../god-info/god-info'
 import NotFound from '../../components/notfound/notfound'
 import NavFooter from '../../components/nav-footer/nav-footer'
 import Personal from '../personal/personal'
+import Chat from '../chat/chat'
 
 import {getUser} from '../../redux/actions'
 import {getredirectTo} from '../../utils/index'
@@ -66,51 +64,58 @@ class Main extends Component {
         },
     ]
 
+   
     //渲染完毕后执行
-    componentDidMount(){
-        //免登录,获取cookie去服务端查询
-        const userid=Cookies.get('userid')
-        const {_id}=this.props
-        if(userid&&!_id){
-           this.props.getUser()
-        }
-    }
+    // componentDidMount(){
+    //     //免登录,获取cookie去服务端查询
+    //     const userid=Cookies.get('userid')
+    //     const {_id}=this.props
+    //     if(userid&&!_id){
+    //        this.props.getUser()
+    //     }
+    // }
 
     render() { 
-      const userid=Cookies.get('userid')
-      if(!userid){
-          return <Redirect to='/login'/>
-      }
-      const user=this.props.user
-      if(!user._id){
-          
-      }else{
-          let path=this.props.location.pathname
-          if(path==='/'||path==='/main'){
-            path=getredirectTo(user.type,user.header)
-            return <Redirect to={path}/>
-          }
-      }
+        // 读取cookie中的userid
+        const userid = this.props.user._id
+        // 如果没有, 自动重定向到登陆界面
+      
+        if(!userid) {
+            return <Redirect _id={userid} to='/login'/>
+        }
+        // 如果有,读取redux中的user状态
+      
+
+    // } else {
+    //   // 如果有_id, 显示对应的界面
+    //   // 如果请求根路径, 根据user的type和header来计算出一个重定向的路由路径, 并自动重定向
+    //     let path = this.props.location.pathname
+    //     if(path==='/') {
+    //         // 得到一个重定向的路由路径
+    //         path = getredirectTo(user.type, user.header)
+    //         return <Redirect to= {path}/>
+    //     }
+    // }
+
+
+
       const {navList} = this
       const path = this.props.location.pathname
-
-      const currentNav = navList.find(nav=>nav.path==path)
+      const currentNav = navList.find(nav=>nav.path===path)
 
         return (
             <div>
-            {currentNav? <NavBar className="navBar">{currentNav.title}</NavBar>:null}
-                <Switch>
+            {currentNav? <NavBar className="navBar sticky-header">{currentNav.title}</NavBar>:null}
+                 <Switch>
                     {
                         navList.map((nav,index)=>  <Route key="index" path={nav.path} component={nav.component}/>)
                     }
                     <Route path='/bossinfo' component={BossInfo}/>
                     <Route path='/godinfo' component={GodInfo}/>   
-                    <Route path='/boss' component={Boss}/>
-                    <Route path='/god' component={God}/>
-                    <Route path='/setting' component={Setting}/>
-                    <Route  component={NotFound}/>      
-                </Switch>
-                {currentNav? <NavFooter className="navFooter" navList={navList}/>:null}
+                    <Route path='/chat/:userid' component={Chat}/>
+                    <Route path='/404' component={NotFound}/>               
+                    </Switch>
+                    {currentNav? <NavFooter className="navFooter" unReadCount={this.props.unReadCount} navList={navList}/>:null}
             </div>
         );
     }
@@ -118,6 +123,7 @@ class Main extends Component {
  
 export default connect(
     state=>({
-        user:state.user
+        user:state.user,
+        unReadCount:state.chat.unReadCount
     }),{getUser}
 )(Main);

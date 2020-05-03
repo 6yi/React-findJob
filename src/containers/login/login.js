@@ -11,7 +11,6 @@ import {
 } from 'antd-mobile'
 import {Redirect} from 'react-router-dom'
 import Logo from '../../components/logo/logo'
-const ListItem=List.Item
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -23,26 +22,27 @@ class Login extends Component {
     }
     register=()=>{
         this.props.login(this.state)
+          
     }
     handleChange=(name,val)=>{
             this.setState({
                 [name]:val
-            })
-            console.log(val)
+        })
+            
     }
     backRegister=()=>{
         this.props.history.replace('/register')
     }
     render() { 
-        const {msg,redirectTo} = this.props.user
-        const buttonActive={
-            backgroundColor:'#4DB6AC'
-        }
+        let {msg,redirectTo} = this.props.user
+       
         if(redirectTo){
+       
             return(
-                <Redirect to={redirectTo}></Redirect>
+                <Redirect  to={redirectTo}></Redirect>
             )
         }
+
         return ( 
             <div>
                 <NavBar className="navBar">React &nbsp;直聘</NavBar>

@@ -28,12 +28,13 @@ class Register extends Component {
   
     register=()=>{
         this.props.register(this.state)
+        
     }
     handleChange=(name,val)=>{
             this.setState({
                 [name]:val
             })
-            console.log(val)
+            
     }
     backLogin=()=>{
         this.props.history.replace('/login')
@@ -44,11 +45,12 @@ class Register extends Component {
         const buttonActive={
             backgroundColor:'#4DB6AC'
         }
-        if(redirectTo){
-            return(
-                <Redirect to={redirectTo}></Redirect>
-            )
-        }
+        if(redirectTo) {
+            console.log("register跳转到到:"+redirectTo+"值等于:"+this.props.user);
+            
+                this.props.history.replace(redirectTo)
+            
+         }
         return ( 
             <div>
                 <NavBar className="navBar">React &nbsp;直聘</NavBar>

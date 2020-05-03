@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import  {connect} from 'react-redux'
-import {Result,Icon,WhiteSpace, List,Button,WingBlank,TextareaItem} from 'antd-mobile'
+import {Result,WhiteSpace,List,WingBlank,TextareaItem} from 'antd-mobile'
 
 /**
  *  个人主界面路由
@@ -19,11 +19,10 @@ class Personal extends Component {
     }
 
     render() { 
-        const {username,type,header,company,post,salary,info} =this.props.user
-        console.log(header)
+        const {username,header,company,post,salary,info} =this.props.user
         return (
             <>
-              <div>
+              <div  style={{marginTop:'13%'}}>
                  <Result
                     img={<img src={header}/>}
                     title={username}

@@ -14,3 +14,4 @@ export default function ajax(url,data={},method='GET'){
         return axios.post(url,data)
     }
 }
+

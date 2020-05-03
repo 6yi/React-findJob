@@ -3,7 +3,7 @@ export function getredirectTo(type,header){
     if(type==='Boss'){
         path='/boss'
     }else{
-        path='god'
+        path='/god'
     }
     if(!header){
         path+='info'

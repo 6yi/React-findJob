@@ -12,16 +12,26 @@ import {
 } from 'antd-mobile'
 import {updateUser} from '../../redux/actions'
 class GodInfo extends Component {
-    state = { 
-        header:'',
-        post:'',
-        info:'',
-        salary:''
-     }
+
+    
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            userid:'' ,
+            header:'',
+            post:'',
+            info:'',
+            salary:''
+         }
+    }
+
+  
      handlerChange = (name,value)=>{
         this.setState({
             [name]:value
         })
+      
     }
     selectHeader =(header)=>{
         this.setState({
@@ -30,10 +40,16 @@ class GodInfo extends Component {
 
     }
     save=()=>{
-       
-       this.props.updateUser(this.state)
-       this.props.history.replace('/')
-       
+        // this.setState({
+        //     userid:this.props.userid
+        // })
+        const {post,header,info,salary} =this.state
+        const userid=this.props.user._id
+        // console.log("值等于:"+userid)
+        // console.log("this.state等于:"+this.state.post)
+        this.props.updateUser({userid,post,header,info,post,salary})
+        this.props.history.replace('/boss')
+     
     }
 
      render() { 
@@ -41,23 +57,24 @@ class GodInfo extends Component {
         const buttonActive={
             backgroundColor:'#4DB6AC'
         }
-        if(header){
-            const path= (type==='Boss'?'/boss':'/god')
-            return <Redirect to={path}/>
-        }
-        return ( 
-            <div>
-                <NavBar className="navBar">完善信息</NavBar>
-                <WingBlank>
-                    <HeaderSelector  selectHeader={this.selectHeader}/>
-                    <InputItem placeholder="输入求职岗位"  onChange={val=>{this.handlerChange('post',val)}}>求职岗位:</InputItem>                    
-                
-                    <WhiteSpace/>
-                    <TextareaItem title="个人简介:" rows={3}  onChange={val=>{this.handlerChange('info',val)}}></TextareaItem>
-                    <Button type="primary" className="am-Button-me" activeStyle={buttonActive} onClick={this.save}>保存</Button>
-                </WingBlank>
-            </div>
-         );
+
+      
+         return ( 
+                <div>
+                    <NavBar className="navBar">完善信息</NavBar>
+                    <WingBlank>
+                        <HeaderSelector  selectHeader={this.selectHeader}/>
+                        <InputItem placeholder="输入求职岗位"  onChange={val=>{this.handlerChange('post',val)}}>求职岗位:</InputItem>                    
+                    
+                        <WhiteSpace/>
+                        <TextareaItem title="个人简介:" rows={3}  onChange={val=>{this.handlerChange('info',val)}}></TextareaItem>
+                        <Button type="primary" className="am-Button-me" activeStyle={buttonActive} onClick={this.save}>保存</Button>
+                    </WingBlank>
+                </div>
+             );
+        
+
+     
     }
 }
  

@@ -1,18 +1,24 @@
 import React,{Component} from 'react'
 import  {connect} from 'react-redux'
+import {getUserList} from '../../redux/actions'
+import UserList from '../../components/user-list/user-list'
 /**
  *  Boss主界面路由
  */
 
 class God extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
+    state={
+        UserList:[]
+    }
+    componentDidMount(){
+        this.props.getUserList('God')
     }
     render() { 
         return (
             <>
-                Boss
+                 
+              <UserList userList={this.props.userlist}/> 
+            
             </>
          );
     }
@@ -20,6 +26,7 @@ class God extends Component {
  
 export default connect(
     state=>({
-        user:state.user
-    })
+        userlist:state.userList
+    }),
+    {getUserList}
 )(God);
